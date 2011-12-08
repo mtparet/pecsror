@@ -1,0 +1,12 @@
+// Place all the styles related to the Affichage controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+    .box {
+        border: 1px solid #CCC;
+        width: 1000px;
+        height: 200px;
+        float: left;
+		position: absolute;
+		bottom: 0;
+        margin: 10px;
+    }
