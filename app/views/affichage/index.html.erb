@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>test d'affichage d'image depuis ruby</title>
-    <%= javascript_include_tag "prototype" %>
   </head>
   <body>
 <script type="text/javascript">
@@ -17,6 +16,9 @@
 		evt.preventDefault();
 	}
 </script>
+<br/>
+
+<br/><br/>
     <h1>Liste des catégories</h1>
 
 	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
@@ -27,6 +29,9 @@
 	<div class="box" ondragover="return false" ondrop="drop(this, event)">
 		<p></p>
 	</div>
-	<div style="clear:both"></div>
+	<%= link_to "click here", 'create_audio' %>
+	<div id="audio_div">
+		<audio src="/<%= @audio%>" autoplay controls>&lt;audio&gt; non supportée !</audio>
+	</div>
   </body>
 </html>

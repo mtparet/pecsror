@@ -1,0 +1,2 @@
+page.alert('Hi')
+page.replace 'audio_div', ''
