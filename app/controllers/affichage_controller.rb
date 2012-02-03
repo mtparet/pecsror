@@ -6,13 +6,13 @@ class AffichageController < ApplicationController
 
 	def index
 		@list_categorie = Images.all
-		@audio = "test.mp3"
-		@phrase = "initial"
+		@audio = "test2.mp3"
+		@@phrase = "initial"
 	end
 
 	def create_audio
-		espeak("public/test2.mp3", :text => @phrase)
-		@audio = "test2.mp3"
+		espeak("public/test2.mp3", :text => @@phrase, :voice => "fr-fr")
+		@@audio = "test2.mp3"
 
 		respond_to do |format|
 			format.js 
@@ -21,7 +21,11 @@ class AffichageController < ApplicationController
 	end
 
 	def create_phrase
-		@phrase = params[:phrase]
+		@@phrase = params[:phrase]
+
+		respond_to do |format|
+			format.html 
+		end
 
 	end
 

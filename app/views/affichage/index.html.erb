@@ -7,9 +7,6 @@
 
 
 <script type="text/javascript">
-
-	phrase = "";
-
 	function drag(target, evt) {
 		evt.dataTransfer.setData("Text", target.id);
 	
@@ -25,7 +22,7 @@
        $.ajax({
          type: "POST",
           url: "create_phrase",
-          data: phrase,
+          data: "phrase=" + phrase,
           success: function(msg){
             $(this).append("<br>Dropped!");
           }
@@ -33,10 +30,6 @@
 
 	}
 </script>
-<br/>
-
-<br/><br/>
-    <h3>Liste des catégories</h3>
 
 	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
 	 <% for image in @list_categorie.collect do %> 
