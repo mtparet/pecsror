@@ -7,6 +7,21 @@
 
 
 <script type="text/javascript">
+
+    $(document).ready (
+        function() {
+            $( "#box_in" ).Sortable( {
+            accept : 'sortable_item',
+            axis : 'horizontally',
+            opacity : 0.6,
+            onchange : function ( sorted ) {
+            serial = $.SortSerialize( 'box_in' ); 
+            }
+
+			 
+        });
+    });
+
 	function drag(target, evt) {
 		evt.dataTransfer.setData("Text", target.id);
 	
@@ -36,8 +51,9 @@
 		<img src="<%= image_path(image.location)%>" id="<%= image.name %>" ondragstart="drag(this, event)">
 	<% end %>
 
-	<div class="box" ondragover="return false" ondrop="drop(this, event)">
-		<p></p>
+	<div id="box_in">
+		<div class="box" ondragover="return false" ondrop="drop(this, event)">
+		</div>
 	</div>
 	<%= link_to 'create audio', {:controller => 'affichage', :action => 'create_audio'}, :remote => true %>
 

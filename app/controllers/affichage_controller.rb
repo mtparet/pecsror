@@ -3,15 +3,17 @@ require 'espeak-ruby'
 include ESpeak
 
 class AffichageController < ApplicationController
-
+	
 	def index
 		@list_categorie = Images.all
-		@audio = "test2.mp3"
-		@@phrase = "initial"
+		@audio = "test.mp3"
+		@@phrase = []
+		
 	end
 
 	def create_audio
-		espeak("public/test2.mp3", :text => @@phrase, :voice => "fr")
+		@phrase_s = @@phrase.join(" ")
+		espeak("public/test2.mp3", :text => @phrase_s, :voice => "fr")
 		@audio = "test2.mp3"
 
 		respond_to do |format|
@@ -21,7 +23,10 @@ class AffichageController < ApplicationController
 	end
 
 	def create_phrase
-		@@phrase = params[:phrase]
+		@phrase_in = params[:phrase]
+		#@position = params[:position]
+		#logger.info "Person attributes hash: #{@position}"
+		@@phrase << @phrase_in
 
 		respond_to do |format|
 			format.html 
