@@ -11,11 +11,11 @@ class AffichageController < ApplicationController
 	end
 
 	def create_audio
-		espeak("public/test2.mp3", :text => @@phrase, :voice => "fr-fr")
-		@@audio = "test2.mp3"
+		espeak("public/test2.mp3", :text => @@phrase, :voice => "fr")
+		@audio = "test2.mp3"
 
 		respond_to do |format|
-			format.js 
+			format.js
 		end
 
 	end
