@@ -4,7 +4,11 @@
     <title>test d'affichage d'image depuis ruby</title>
   </head>
   <body>
+
+
 <script type="text/javascript">
+
+	phrase = "";
 
 	function drag(target, evt) {
 		evt.dataTransfer.setData("Text", target.id);
@@ -12,26 +16,40 @@
 	}
 	function drop(target, evt) {
 		var id = evt.dataTransfer.getData("Text");
+		var phrase = document.getElementById(id).getAttribute("id");
 		target.appendChild(document.getElementById(id));
 		evt.preventDefault();
+
+	   var c = {};
+       c['authenticity_token'] = encodeURIComponent(window._token);
+       $.ajax({
+         type: "POST",
+          url: "create_phrase",
+          data: phrase,
+          success: function(msg){
+            $(this).append("<br>Dropped!");
+          }
+       });
+
 	}
 </script>
 <br/>
 
 <br/><br/>
-    <h1>Liste des catégories</h1>
+    <h3>Liste des catégories</h3>
 
 	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
 	 <% for image in @list_categorie.collect do %> 
-		<img src="<%= image_path(image.location)%>" id="cr" ondragstart="drag(this, event)">
+		<img src="<%= image_path(image.location)%>" id="<%= image.name %>" ondragstart="drag(this, event)">
 	<% end %>
 
 	<div class="box" ondragover="return false" ondrop="drop(this, event)">
 		<p></p>
 	</div>
-	<%= link_to "click here", 'create_audio' %>
-	<div id="audio_div">
-		<audio src="/<%= @audio%>" autoplay controls>&lt;audio&gt; non supportée !</audio>
+	<%= link_to 'create audio', {:controller => 'affichage', :action => 'create_audio'}, :remote => true %>
+
+	<div id="audio">
+		<%= render :partial => "audio" %>
 	</div>
   </body>
 </html>

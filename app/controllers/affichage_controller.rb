@@ -6,17 +6,23 @@ class AffichageController < ApplicationController
 
 	def index
 		@list_categorie = Images.all
+		@audio = "test.mp3"
+		@phrase = "initial"
 	end
 
 	def create_audio
-		espeak("test.mp3", :text => "Hello World")
-		@audio = "test.mp3"
-		
+		espeak("public/test2.mp3", :text => @phrase)
+		@audio = "test2.mp3"
+
 		respond_to do |format|
-			format.html { redirect_to('affichage') }
-			format.js
-			format.xml {head :ok}
+			format.js 
 		end
+
+	end
+
+	def create_phrase
+		@phrase = params[:phrase]
+
 	end
 
 end

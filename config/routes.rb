@@ -50,6 +50,8 @@ Pecs::Application.routes.draw do
   # just remember to delete public/index.html.
    root :to => 'affichage#index'
 	match "/create_audio/" => "affichage#create_audio"
+	match "affichage" => 'affichage#index'
+	match "/create_phrase" => "affichage#create_phrase"
 
   # See how all your routes lay out with "rake routes"
 
