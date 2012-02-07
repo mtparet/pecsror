@@ -1,0 +1,8 @@
+<div class="sequence_c">
+    <% sequence = @list_sequence.find(:name => "pull").first %>
+
+	  <% for sequence_liste in sequence.sequence_liste.collect do %> 
+		<img src="<%= image_path(sequence_liste.images.location)%>" id="<%= sequence_liste.images.name %>" >
+	<% end %>
+  }
+</div>

@@ -46,11 +46,16 @@
 	}
 </script>
 
+  
 	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
 	 <% for sequence in @list_sequence.collect do %> 
-    <%= sequence.name%>
+    <%= sequence.name %>
 		<img src="<%= image_path(sequence.sequence_liste.first.images.location)%>" id="<%= sequence.sequence_liste.first.images.name %>" >
 	<% end %>
+
+  <div id="sequence">
+    <%= render :partial => "sequence" %>
+  </div>
 
 	<div id="box_in">
 		<div class="box" ondragover="return false" ondrop="drop(this, event)">
