@@ -1,0 +1,2 @@
+module ImageSequentielleHelper
+end

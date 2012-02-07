@@ -1,0 +1,2 @@
+class ImageSequentielleController < ApplicationController
+end
