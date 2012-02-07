@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Images sequentielles</title>
+  </head>
+  <body>
+
+
+<script type="text/javascript">
+
+    $(document).ready (
+        function() {
+            $( "#box_in" ).Sortable( {
+            accept : 'sortable_item',
+            axis : 'horizontally',
+            opacity : 0.6,
+            onchange : function ( sorted ) {
+            serial = $.SortSerialize( 'box_in' ); 
+            }
+
+			 
+        });
+    });
+
+	function drag(target, evt) {
+		evt.dataTransfer.setData("Text", target.id);
+	
+	}
+	function drop(target, evt) {
+		var id = evt.dataTransfer.getData("Text");
+		var phrase = document.getElementById(id).getAttribute("id");
+		target.appendChild(document.getElementById(id));
+		evt.preventDefault();
+
+	   var c = {};
+       c['authenticity_token'] = encodeURIComponent(window._token);
+       $.ajax({
+         type: "POST",
+          url: "create_phrase",
+          data: "phrase=" + phrase,
+          success: function(msg){
+            $(this).append("<br>Dropped!");
+          }
+       });
+
+	}
+</script>
+
+	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
+	 <% for sequence in @list_sequence.collect do %> 
+    <%= sequence.name%>
+		<img src="<%= image_path(sequence.sequence_liste.first.images.location)%>" id="<%= sequence.sequence_liste.first.images.name %>" >
+	<% end %>
+
+	<div id="box_in">
+		<div class="box" ondragover="return false" ondrop="drop(this, event)">
+		</div>
+	</div>
+	<%= link_to 'create audio', {:controller => 'affichage', :action => 'create_audio'}, :remote => true %>
+
+	<div id="audio">
+		<%= render :partial => "audio" %>
+	</div>
+  </body>
+</html>
