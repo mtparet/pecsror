@@ -58,8 +58,7 @@
   </div>
 
 	<div id="box_in">
-		<div class="box" ondragover="return false" ondrop="drop(this, event)">
-		</div>
+    <%= render :partial => "box_in" %>
 	</div>
 	<%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
 
