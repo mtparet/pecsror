@@ -1,5 +1,9 @@
 <div class="sequence_c">
 	  <% for sequence_liste in @sequence.sequence_liste.collect do %> 
+  <li id=<%= sequence_liste.images.name %> ondragstart="drag(this, event)" >
 		<%= image_tag(sequence_liste.images.location, :size => "90x90") %>
+    </li>
 	<% end %>
+
+
 </div>
