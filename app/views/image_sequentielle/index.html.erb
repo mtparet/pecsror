@@ -50,7 +50,8 @@
 	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
 	 <% for sequence in @list_sequence.collect do %> 
     <%= sequence.name %>
-		<img src="<%= image_path(sequence.sequence_liste.first.images.location)%>" id="<%= sequence.sequence_liste.first.images.name %>" >
+    <%= link_to(image_tag(sequence.sequence_liste.first.images.location, :size => "70x70"), {:controller => "image_sequentielle", :action => 'display_sequence', :sequence_name => sequence.name}, :remote => true) %>
+		<!-- <img src="<%= image_path(sequence.sequence_liste.first.images.location)%>" id="<%= sequence.sequence_liste.first.images.name %>" > -->
 	<% end %>
 
   <div id="sequence">
@@ -61,7 +62,7 @@
 		<div class="box" ondragover="return false" ondrop="drop(this, event)">
 		</div>
 	</div>
-	<%= link_to 'create audio', {:controller => 'affichage', :action => 'create_audio'}, :remote => true %>
+	<%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
 
 	<div id="audio">
 		<%= render :partial => "audio" %>
