@@ -1,5 +1,5 @@
 require 'espeak-ruby'
-
+require 'fileutils'
 include ESpeak
 
 class ImageSequentielleController < ApplicationController
@@ -16,14 +16,19 @@ class ImageSequentielleController < ApplicationController
 		end
   end
 
-  	def create_audio
+  def create_audio
 		@phrase_s = @@phrase.join(" ")
 		espeak("public/test2.mp3", :text => @phrase_s, :voice => "fr")
 		@audio = "test2.mp3"
 
 		respond_to do |format|
 			format.js
-		end
-
+	  end
 	end
+
+  def new 
+  end
+
+  def create
+  end
 end
