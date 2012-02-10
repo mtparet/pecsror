@@ -1,4 +1,4 @@
 class SequenceListe < ActiveRecord::Base
   belongs_to :sequence
-  belongs_to :images
+  belongs_to :image
 end

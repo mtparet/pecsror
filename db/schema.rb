@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120210093718) do
+ActiveRecord::Schema.define(:version => 20120210171109) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -32,17 +32,17 @@ ActiveRecord::Schema.define(:version => 20120210093718) do
   create_table "sequence_listes", :force => true do |t|
     t.integer  "order"
     t.integer  "sequence_id"
-    t.integer  "images_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "image_id"
   end
 
   create_table "sequences", :force => true do |t|
     t.string   "name"
-    t.integer  "images_id"
     t.integer  "sequence_liste_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.integer  "image_id"
   end
 
   create_table "translations", :force => true do |t|

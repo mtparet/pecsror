@@ -5,7 +5,7 @@ include ESpeak
 class AffichageController < ApplicationController
 	
 	def index
-		@list_categorie = Images.all
+		@list_categorie = Image.all
 		@audio = "test.mp3"
 		@@phrase = []
 		

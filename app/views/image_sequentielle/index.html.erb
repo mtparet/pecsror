@@ -50,8 +50,8 @@
 	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
 	 <% for sequence in @list_sequence.collect do %> 
     <%= sequence.name %>
-    <% unless sequence.sequence_liste.first.images.image_file.nil? %>
-    <%= link_to(image_tag(sequence.sequence_liste.first.images.image_file.thumb.url), {:controller => "image_sequentielle", :action => 'display_sequence', :sequence_name => sequence.name}, :remote => true) %>
+    <% unless sequence.sequence_liste.first.image.image_file.nil? %>
+    <%= link_to(image_tag(sequence.sequence_liste.first.image.image_file.thumb.url), {:controller => "image_sequentielle", :action => 'display_sequence', :sequence_name => sequence.name}, :remote => true) %>
   <% end %>
 	<% end %>
 
