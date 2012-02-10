@@ -48,7 +48,7 @@
 
 	<!-- parcourt de la liste des catégories et affichage de l'image correspondant -->
 	 <% for image in @list_categorie.collect do %> 
-		<img src="<%= image_path(image.location)%>" id="<%= image.name %>" ondragstart="drag(this, event)">
+		<img src="<%= image_path(image.image_file.medium.url)%>" id="<%= image.name %>" ondragstart="drag(this, event)">
 	<% end %>
 
 	<div id="box_in">

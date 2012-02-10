@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120209175832) do
+ActiveRecord::Schema.define(:version => 20120210093718) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20120209175832) do
     t.integer  "categorie_id"
     t.integer  "sequence_id"
     t.integer  "sequence_liste_id"
+    t.string   "image_file"
   end
 
   create_table "sequence_listes", :force => true do |t|
