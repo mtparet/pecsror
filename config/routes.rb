@@ -51,7 +51,8 @@ Pecs::Application.routes.draw do
   root :to => 'affichage#index'
   
   match "/images/new" => "image#new", :as => :image
-  match "/images" => "image#show"
+  match "/images" => "image#index"
+  #match "/images/create" => "image#create"
   match "/images_sequentielles" => "image_sequentielle#index"
   match "/images_sequentielles/display_sequence" => "image_sequentielle#display_sequence"
   match "/images_sequentielles/new" => "image_sequentielle#new"

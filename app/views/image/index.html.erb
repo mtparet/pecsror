@@ -1,0 +1,4 @@
+<% for image in @images.collect do %> 
+    <%= image.name %>
+    <%= image_tag(image.image_file.thumb.url) %>
+<% end %>
