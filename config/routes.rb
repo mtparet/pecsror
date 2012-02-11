@@ -50,13 +50,14 @@ Pecs::Application.routes.draw do
   # just remember to delete public/index.html.
   root :to => 'affichage#index'
   
-  match "/images/new" => "image#new"
-
+  match "/images/new" => "image#new", :as => :image
+  match "/images" => "image#show"
   match "/images_sequentielles" => "image_sequentielle#index"
   match "/images_sequentielles/display_sequence" => "image_sequentielle#display_sequence"
   match "/images_sequentielles/new" => "image_sequentielle#new"
   match "/images_sequentielles/create_audio" => "image_sequentielle#create_audio"
 
+ #resources :image
 
 	match "/create_audio" => "affichage#create_audio"
 	match "affichage" => 'affichage#index'

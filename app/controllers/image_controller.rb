@@ -1,7 +1,7 @@
 class ImageController < ApplicationController
 
   def new
-    @Image = Image.new
+    @image = Image.new
   end
 
 end
