@@ -51,17 +51,17 @@ Pecs::Application.routes.draw do
   root :to => 'affichage#index'
   
   match "/images/new" => "image#new", :as => :image
-  match "/images" => "image#index"
+  get "/images" => "image#index"
+  post "/images" => "image#create"
   #match "/images/create" => "image#create"
   match "/images_sequentielles" => "image_sequentielle#index"
   match "/images_sequentielles/display_sequence" => "image_sequentielle#display_sequence"
   match "/images_sequentielles/new" => "image_sequentielle#new"
   match "/images_sequentielles/create_audio" => "image_sequentielle#create_audio"
 
- #resources :image
+  resources :image
 
 	match "/create_audio" => "affichage#create_audio"
-	match "affichage" => 'affichage#index'
 	match "/create_phrase" => "affichage#create_phrase"
 
   # See how all your routes lay out with "rake routes"
