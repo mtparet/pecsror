@@ -8,7 +8,7 @@
 
 <script type="text/javascript">
 
-    $(document).ready (
+    /*$(document).ready (
         function() {
             $( "#box_in" ).Sortable( {
             accept : 'sortable_item',
@@ -20,7 +20,7 @@
 
 			 
         });
-    });
+    });*/
 
 	function drag(target, evt) {
 		evt.dataTransfer.setData("Text", target.id);
@@ -29,10 +29,19 @@
 	function drop(target, evt) {
 		var id = evt.dataTransfer.getData("Text");
 		var phrase = document.getElementById(id).getAttribute("id");
-		target.appendChild(document.getElementById(id));
+
+    var box = 	'<div id="' + target.id + '" class="box" ondragover="return false" ondrop="drop(this, event)"> </div>';
+    target.innerHTML = box;
+
+    target.appendChild(document.getElementById(id));
 		evt.preventDefault();
 
-	   var c = {};
+    var box2 = 	'<div id="' + (target.id + 1) + '" class="box2" ondragover="return false" ondrop="drop(this, event)"> </div>';
+    target.innerHTML += box2;
+    
+
+
+	   /*var c = {};
        c['authenticity_token'] = encodeURIComponent(window._token);
        $.ajax({
          type: "POST",
@@ -41,7 +50,7 @@
           success: function(msg){
             $(this).append("<br>Dropped!");
           }
-       });
+       });*/
 
 	}
 </script>
@@ -59,9 +68,9 @@
     <%= render :partial => "sequence" %>
   </div>
 
-	<div id="box_in">
-    <%= render :partial => "box_in" %>
-	</div>
+	<div id="1" class="box" ondragover="return false" ondrop="drop(this, event)">
+</div>
+
 	<%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
 
 	<div id="audio">
