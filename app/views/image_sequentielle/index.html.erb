@@ -22,23 +22,52 @@
         });
     });*/
 
+  var tab_order = new Array();
+
+  function insert_end(id_name){
+    tab_order.push(id_name);
+  }
+  
+  function insert_at(id_name,num_place){
+    var temp_name = id_name;
+    var temp_name2;
+    if(num_place < tab_order.length){
+     // on déplace le tableau sur la gauche
+      for(i = num_place;i < tab_order.length; i++){
+        temp_name2 = tab_order[i];
+        tab_order[i] = temp_name;
+        temp_name = temp_name2
+      }
+      
+      tab_order.push(temp_name);
+    }
+  }
+
 	function drag(target, evt) {
 		evt.dataTransfer.setData("Text", target.id);
 	
 	}
 	function drop(target, evt) {
 		var id = evt.dataTransfer.getData("Text");
-		var phrase = document.getElementById(id).getAttribute("id");
-
-    var box = 	'<div id="' + target.id + '" class="box" ondragover="return false" ondrop="drop(this, event)"> </div>';
-    target.innerHTML = box;
-
-    target.appendChild(document.getElementById(id));
-		evt.preventDefault();
-
-    var box2 = 	'<div id="' + (target.id + 1) + '" class="box2" ondragover="return false" ondrop="drop(this, event)"> </div>';
-    target.innerHTML += box2;
+		var id_name = document.getElementById(id).getAttribute("id");
     
+    //On teste si c'est le premier élément à être droper
+    if( target.children.length == 0){
+      insert_end(id_name);
+      var box = 	'<div id="' + target.id + '" class="box" ondragover="return false" ondrop="drop(this, event)"> </div>';
+      target.innerHTML = box;
+      
+      var id_box2 = target.id + 1;
+      var box2 = 	'<div id="' + id_box2 + '" class="box2" ondragover="return false" ondrop="drop(this, event)"> </div>';
+      target.innerHTML += box2;
+      var width_box2 = (document.body.clientWidth - (target.id * 100));
+      document.getElementById(id_box2).style.width = width_box2;
+      document.getElementById(id_box2).appendChild(document.getElementById(id));
+		  evt.preventDefault();
+    }else{
+      insert_at(id_name,target);
+
+    }
 
 
 	   /*var c = {};
@@ -68,8 +97,10 @@
     <%= render :partial => "sequence" %>
   </div>
 
-	<div id="1" class="box" ondragover="return false" ondrop="drop(this, event)">
-</div>
+  <div id="box_in">
+    <%= render :partial => "box_in" %>
+  </div>
+
 
 	<%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
 
