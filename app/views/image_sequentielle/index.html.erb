@@ -54,15 +54,34 @@
     //On teste si c'est le premier élément à être droper
     if( target.children.length == 0){
       insert_end(id_name);
-      var box = 	'<div id="' + target.id + '" class="box" ondragover="return false" ondrop="drop(this, event)"> </div>';
-      target.innerHTML = box;
+      target.className = "";
+      //target.id = target.id + "_old"; 
+
+      //var children = target.childNodes;
+      //for(var i = 0; i < children.length; i++)
+      //target.removeChild(children[i]);
       
-      var id_box2 = target.id + 1;
-      var box2 = 	'<div id="' + id_box2 + '" class="box2" ondragover="return false" ondrop="drop(this, event)"> </div>';
-      target.innerHTML += box2;
-      var width_box2 = (document.body.clientWidth - (target.id * 100));
-      document.getElementById(id_box2).style.width = width_box2;
-      document.getElementById(id_box2).appendChild(document.getElementById(id));
+  
+      var box = document.createElement("div");
+      box.className = "box2";
+      box.id = target.id ;
+      box.setAttribute("ondragover", "return false");
+      box.setAttribute("ondrop","drop(this, event");
+      box.appendChild(document.getElementById(id));
+      target.appendChild(box);
+
+      var box2 = document.createElement("div");
+      box2.className = "box";
+      box2.id = target.id + 1;
+      box2.setAttribute("ondragover", "return false");
+      box2.setAttribute("ondrop","drop(this, event");
+      var width_box2 = (window.innerWidth - ((target.id + 1) * 100));
+      box2.style.width = width_box2;
+      
+      target.appendChild(box2);
+
+      
+      
 		  evt.preventDefault();
     }else{
       insert_at(id_name,target);
