@@ -49,13 +49,12 @@
 	}
 	function drop(target, evt) {
 		var id = evt.dataTransfer.getData("Text");
-		var id_name = document.getElementById(id).getAttribute("id");
+		var id_name = document.getElementById(id).id;
     
     //On teste si c'est le premier élément à être droper
-    if( target.children.length == 0){
+    if( target.id == "box_drop"){
+      parent = target.parentNode;
       insert_end(id_name);
-      target.className = "";
-      //target.id = target.id + "_old"; 
 
       //var children = target.childNodes;
       //for(var i = 0; i < children.length; i++)
@@ -64,28 +63,56 @@
   
       var box = document.createElement("div");
       box.className = "box2";
-      box.id = target.id ;
+      box.id = parent.children.length - 1;
       box.setAttribute("ondragover", "return false");
-      box.setAttribute("ondrop","drop(this, event");
+      box.setAttribute("ondrop","drop(this, event)");
       box.appendChild(document.getElementById(id));
-      target.appendChild(box);
+      //var marginLeft_box = ((parent.children.length - 1) * 100);
+      //box.style.marginLeft = marginLeft_box;
+      parent.appendChild(box);
+      
+      var marginLeft_box_in = (parent.children.length * 100);
+      target.style.marginLeft = marginLeft_box_in;
 
-      var box2 = document.createElement("div");
-      box2.className = "box";
-      box2.id = target.id + 1;
-      box2.setAttribute("ondragover", "return false");
-      box2.setAttribute("ondrop","drop(this, event");
-      var width_box2 = (window.innerWidth - ((target.id + 1) * 100));
-      box2.style.width = width_box2;
-      
-      target.appendChild(box2);
-
-      
-      
 		  evt.preventDefault();
     }else{
-      insert_at(id_name,target);
+      insert_at(id_name,target.id);
+      rebuild_box();
+      evt.preventDefault();
+    }
+  }
 
+    function rebuild_box(){
+      box_old = document.getElementById("box_in"); 
+      //for(var i = 0; i < target.children.length; i++){
+      //  target.removeChild(target.children[i]); 
+      //} 
+
+        var box_in = document.createElement("div");
+        box_in.className = "box_in";
+        box_in.id = "box_in";
+
+      for(i = 0; i < tab_order.length; i++){
+        var box = document.createElement("div");
+        box.className = "box2";
+        box.id = i;
+        box.setAttribute("ondragover", "return false");
+        box.setAttribute("ondrop","drop(this, event)");
+        box.appendChild(document.getElementById(tab_order[i]));
+        //var marginLeft_box = (i * 100);
+        //box.style.marginLeft = marginLeft_box;
+        box_in.appendChild(box);
+      }
+
+      var box = document.createElement("div");
+        box.className = "box2";
+        box.id = "drop_box";
+        box.setAttribute("ondragover", "return false");
+        box.setAttribute("ondrop","drop(this, event");
+        box_in.appendChild(box);
+
+      
+      var a = box_old.parentNode.replaceChild(box_in,box_old);
     }
 
 
@@ -100,7 +127,7 @@
           }
        });*/
 
-	}
+	
 </script>
 
   
@@ -116,15 +143,17 @@
     <%= render :partial => "sequence" %>
   </div>
 
-  <div id="box_in">
-    <%= render :partial => "box_in" %>
-  </div>
-
-
-	<%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
+  <%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
 
 	<div id="audio">
 		<%= render :partial => "audio" %>
 	</div>
+
+  <div id="box_in" class="box_in">
+    <%= render :partial => "box_in" %>
+  </div>
+
+
+
   </body>
 </html>
