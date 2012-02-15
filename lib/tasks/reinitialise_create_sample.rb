@@ -2,7 +2,7 @@ SequenceListe.delete_all
 Sequence.delete_all
 Image.delete_all
 
-['initial','maison','fleur','lit','garcon'].each do |valeur|
+['initial','maison','fleur','lit','garcon','smiley_good','smiley_bad'].each do |valeur|
   i = Image.new(:name => valeur)
   i.image_file = File.open("app/assets/images/#{valeur}.jpg")
   i.save

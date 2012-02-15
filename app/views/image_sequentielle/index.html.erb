@@ -76,13 +76,14 @@
     var target_place;
 
     if(target.children.length > 0){
-      target_place = tab_order.indexOf(target.firstChild.id);
+      target_place = tab_order.indexOf(target.getElementsByClassName("image_sequence")[0].id);
     }
     
     var before_name = "";
 
     //on teste si l'image provient déjà de la liste
     if(parent_image.className == "box2"){
+      parent_image.parentNode.removeChild(parent_image);
       //on teste si on va réellement déplacer l'image
       var image_place = tab_order.indexOf(element_drag.id);
 
@@ -104,7 +105,6 @@
         insert_end(id_name);
 
       }else{
-        var target_place = tab_order.indexOf(target.firstChild.id);
         insert_at(id_name,target_place);
       }
       
@@ -123,33 +123,91 @@
       box.id = id_name + "_box";
       box.setAttribute("ondragover", "return false");
       box.setAttribute("ondrop","drop(this, event)");
+
       box.appendChild(element_drag);
+      
 
       parent.insertBefore(box, document.getElementById(before_name));
       
-      //test si l'image vennais déjà de la liste
-      if(parent_image.className == "box2"){
-        parent_image.parentNode.removeChild(parent_image);
+		  evt.preventDefault();
+      check_order();
+  }
+
+    function checkorder(id_name){
+      var tab_order_length = tab_order.length;
+
+      //si il n'y a qu'une image on ne peut pas tester
+      if(tab_order_length > 1){
+
+        var index_order = tab_order.indexOf(id_name);
+        var index_correct = tab_correct.indexOf(id_name);
+        
+        //si un autre image ne peut être que a droite
+        if(index_order == 0){
+          //on test si l'image à droite est la même dans les deux tableaux
+          if(((index_correct + 1) < tab_correct.length ) && (tab_order[index_order + 1] == tab_correct[index_correct + 1])){
+            smiley = document.getElementById("smiley_good").cloneNode(true);
+          }else{
+            smiley = document.getElementById("smiley_bad").cloneNode(true);
+          } 
+        //sinon on test l'image à gauche
+        //TODO : préviligier la plus longue chaine juste
+        }else{
+          if(((index_correct - 1) >= 0 ) && (tab_order[index_order - 1] == tab_correct[index_correct - 1])){
+            smiley = document.getElementById("smiley_good").cloneNode(true);
+          }else{
+          //sinon on test il y a une image à droite
+            if(((index_correct + 1) < tab_order.length ) && ((index_correct + 1) < tab_correct.length ) && (tab_order[index_order + 1] == tab_correct[index_correct + 1])){
+                 smiley = document.getElementById("smiley_good").cloneNode(true);
+            }else{
+               smiley = document.getElementById("smiley_bad").cloneNode(true);
+            }
+           
+          } 
+        }
+
+        smiley.id += id_name;
+        smiley.style.display = "";
+        return smiley;
+      }
+    }
+
+    function check_order(){
+    var id_name ;
+    var image_parent;
+    var smiley_current;
+    var smiley;
+      if(tab_order.length > 1 ){
+        for(i = 0; i < tab_order.length; i++){
+          id_name = tab_order[i];
+          image_parent = document.getElementById(id_name).parentNode;
+          smiley_current = image_parent.getElementsByClassName("smiley")[0];
+          if(smiley_current != null){
+            image_parent.removeChild(smiley_current);
+          }
+          smiley = checkorder(id_name)
+          image_parent.insertBefore(smiley,document.getElementById(id_name))
+        }
+        
       }
 
-		  evt.preventDefault();
-  }
-    function check_order(){
-      for(i = 0; i < tab_order; i++){
-        if(tab_order[i] == tab_correct[i]){
-          add_good(tab_order[i]);
-        }else{
-          add_bad(tab_order[i]);
-        }
-      }
+      
     }
 
     function add_good(id_name){
       var image_parent = document.getElementById(id_name).parentNode;
+      var smiley_good = document.getElementById("smiley_good").cloneNode(true);
+      smiley_good.id += "a";
+      smiley_good.style.display = "block";
+      image_parent.insertBefore(smiley_good,document.getElementById(id_name))
     }
 
     function add_bad(id_name){
       var image_parent = document.getElementById(id_name).parentNode;
+      var smiley_bad = document.getElementById("smiley_bad").cloneNode(true);
+      smiley_bad.id += "a";
+      smiley_bad.style.display = "block";
+      image_parent.insertBefore(smiley_bad,document.getElementById(id_name))
     }
 
     // plus à jour pas forcément juste, ne pas utiliser avant revu
@@ -224,7 +282,7 @@
     <%= render :partial => "box_in" %>
   </div>
 
-
+  <%= render :partial => "smiley" %>
 
   </body>
 </html>

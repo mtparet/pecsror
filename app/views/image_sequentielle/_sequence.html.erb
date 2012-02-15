@@ -1,7 +1,7 @@
 <div class="sequence_c">
 	  <% for sequence_liste in @sequence.sequence_liste.collect do %> 
     <% unless sequence_liste.image.nil? %>
-		<%= image_tag(sequence_liste.image.image_file.medium.url, :ondragstart => "drag(this, event)",  :id => sequence_liste.image.name ) %>
+		<%= image_tag(sequence_liste.image.image_file.medium.url, :ondragstart => "drag(this, event)", :draggable => "true", :id => sequence_liste.image.name, :class => "image_sequence" ) %>
   <% end %>
 	<% end %>
 

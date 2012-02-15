@@ -6,6 +6,8 @@ class ImageSequentielleController < ApplicationController
 	def index
 		@list_sequence = Sequence.all
     @sequence = Sequence.where(:name => "initial").first
+    @image_smiley_good = Image.where(:name => "smiley_good").first
+    @image_smiley_bad = Image.where(:name => "smiley_bad").first
 	end
 
   def display_sequence
