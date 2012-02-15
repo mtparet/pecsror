@@ -42,6 +42,24 @@
       tab_order.push(temp_name);
     }
   }
+   
+  function move_end(id_name){
+    var index = tab_order.indexOf(id_name);
+    tab_order.splice(index,1);
+    tab_order.push(id_name);
+       
+  }
+
+  function move_at(id_name,num_place){
+    var index = tab_order.indexOf(id_name);
+    tab_order.splice(index,1);
+
+    if(num_place >= tab_order.length){
+      tab_order.push(id_name);
+    }else{
+      insert_at(id_name,num_place);
+    }
+  }
 
 	function drag(target, evt) {
 		evt.dataTransfer.setData("Text", target.id);
@@ -50,36 +68,70 @@
 	function drop(target, evt) {
 		var id = evt.dataTransfer.getData("Text");
 		var id_name = document.getElementById(id).id;
-    
-    //On teste si c'est le premier élément à être droper
-    if( target.id == "box_drop"){
-      parent = target.parentNode;
-      insert_end(id_name);
+    var parent = target.parentNode;
+    var target_id = target.id;
+    var element_drag = document.getElementById(id);
+    var parent_image = element_drag.parentNode;
+    var target_place;
 
-      //var children = target.childNodes;
-      //for(var i = 0; i < children.length; i++)
-      //target.removeChild(children[i]);
+    if(target.children.length > 0){
+      target_place = tab_order.indexOf(target.firstChild.id);
+    }
+    
+    var before_name = "";
+
+    //on teste si l'image provient déjà de la liste
+    if(parent_image.className == "box2"){
+      //on teste si on va réellement déplacer l'image
+      var image_place = tab_order.indexOf(element_drag.id);
+
+      if(image_place != target_place){
+        //test si on déplacer l'image d'une case vers la droite
+        //if(target_place == (image_place + 1)){
+          //target_place++;          
+        //} 
+        if( (target_id == "box_drop") || (target_place >= tab_order.length ) ){
+          move_end(id_name);
+        }else{
+          move_at(id_name,target_place);
+        }
+ 
+      }
+    }else{  
+      // on teste si l'on déplace à la fin (box_drop) ou sur une case déjà occupée
+      if( target_id == "box_drop"){
+        insert_end(id_name);
+
+      }else{
+        var target_place = tab_order.indexOf(target.firstChild.id);
+        insert_at(id_name,target_place);
+      }
       
-  
+    }
+      
+      //on récupère la place final de l'élément dans le tableau
+      if(tab_order.indexOf(id_name) >= (tab_order.length -1)){
+        before_name = "box_drop";
+      }else{
+        //sinon on récupère l'élément qui suit dans le tableau et le nom de la box qui le contient.
+        before_name = document.getElementById(tab_order[(tab_order.indexOf(id_name) + 1)]).parentNode.id;
+      }
+      
       var box = document.createElement("div");
       box.className = "box2";
-      box.id = parent.children.length - 1;
+      box.id = id_name + "_box";
       box.setAttribute("ondragover", "return false");
       box.setAttribute("ondrop","drop(this, event)");
-      box.appendChild(document.getElementById(id));
-      //var marginLeft_box = ((parent.children.length - 1) * 100);
-      //box.style.marginLeft = marginLeft_box;
-      parent.appendChild(box);
+      box.appendChild(element_drag);
+
+      parent.insertBefore(box, document.getElementById(before_name));
       
-      var marginLeft_box_in = (parent.children.length * 100);
-      target.style.marginLeft = marginLeft_box_in;
+      //test si l'image vennais déjà de la liste
+      if(parent_image.className == "box2"){
+        parent_image.parentNode.removeChild(parent_image);
+      }
 
 		  evt.preventDefault();
-    }else{
-      insert_at(id_name,target.id);
-      rebuild_box();
-      evt.preventDefault();
-    }
   }
 
     function rebuild_box(){
