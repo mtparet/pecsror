@@ -8,7 +8,7 @@ Image.delete_all
   i.save
 end
 
-sq = SequenceListe.new(:order => 1)
+sq = SequenceListe.new(:order_sequence => 1)
 sq.image = Image.where(:name => "initial").first
 
 s = Sequence.new(:name => 'initial')
@@ -17,15 +17,15 @@ s.save
 
 s = Sequence.new(:name => 'maison')
 
-sq = SequenceListe.new(:order => 1)
+sq = SequenceListe.new(:order_sequence => 1)
 sq.image = Image.where(:name => "maison").first
 s.sequence_liste << sq
 
-sq = SequenceListe.new(:order => 2)
+sq = SequenceListe.new(:order_sequence => 2)
 sq.image = Image.where(:name => "fleur").first
 s.sequence_liste << sq
 
-sq = SequenceListe.new(:order => 3)
+sq = SequenceListe.new(:order_sequence => 3)
 sq.image = Image.where(:name => "garcon").first
 s.sequence_liste << sq
 

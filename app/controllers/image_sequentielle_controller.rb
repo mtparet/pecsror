@@ -11,6 +11,8 @@ class ImageSequentielleController < ApplicationController
   def display_sequence
     @sequence = Sequence.where(:name => params[:sequence_name]).first
     
+    @tab_correct = @sequence.sequence_liste.order("order_sequence").map { |i| i.image.name}
+    
     respond_to do |format|
 			format.js
 		end

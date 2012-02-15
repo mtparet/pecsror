@@ -11,12 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120210171109) do
+ActiveRecord::Schema.define(:version => 20120215142914) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "image", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "categorie_id"
+    t.integer  "sequence_id"
+    t.integer  "sequence_liste_id"
+    t.string   "image_file"
   end
 
   create_table "images", :force => true do |t|
@@ -30,11 +40,11 @@ ActiveRecord::Schema.define(:version => 20120210171109) do
   end
 
   create_table "sequence_listes", :force => true do |t|
-    t.integer  "order"
     t.integer  "sequence_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "image_id"
+    t.integer  "order_sequence"
   end
 
   create_table "sequences", :force => true do |t|

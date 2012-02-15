@@ -23,6 +23,7 @@
     });*/
 
   var tab_order = new Array();
+  var tab_correct = new Array();
 
   function insert_end(id_name){
     tab_order.push(id_name);
@@ -133,7 +134,25 @@
 
 		  evt.preventDefault();
   }
+    function check_order(){
+      for(i = 0; i < tab_order; i++){
+        if(tab_order[i] == tab_correct[i]){
+          add_good(tab_order[i]);
+        }else{
+          add_bad(tab_order[i]);
+        }
+      }
+    }
 
+    function add_good(id_name){
+      var image_parent = document.getElementById(id_name).parentNode;
+    }
+
+    function add_bad(id_name){
+      var image_parent = document.getElementById(id_name).parentNode;
+    }
+
+    // plus à jour pas forcément juste, ne pas utiliser avant revu
     function rebuild_box(){
       box_old = document.getElementById("box_in"); 
       //for(var i = 0; i < target.children.length; i++){
