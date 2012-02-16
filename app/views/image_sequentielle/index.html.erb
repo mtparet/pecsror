@@ -8,32 +8,26 @@
 
 <script type="text/javascript">
 
-    /*$(document).ready (
-        function() {
-            $( "#box_in" ).Sortable( {
-            accept : 'sortable_item',
-            axis : 'horizontally',
-            opacity : 0.6,
-            onchange : function ( sorted ) {
-            serial = $.SortSerialize( 'box_in' ); 
-            }
 
-			 
-        });
-    });*/
-
+  /* tableau de l'ordre des images tel que l'utilisateur va les place*/
   var tab_order = new Array();
+
+  /* tableau de l'ordre correct */
   var tab_correct = new Array();
 
+  /* insérer dans le tableau à la fin */
   function insert_end(id_name){
     tab_order.push(id_name);
   }
   
+  /* insérer dans tableau de l'élément id_name à la place num_place
+     id_name est insérer à la place num_place et le reste du tableau est déplacé sur la droite */ 
   function insert_at(id_name,num_place){
     var temp_name = id_name;
     var temp_name2;
     if(num_place < tab_order.length){
-     // on déplace le tableau sur la gauche
+
+     // on déplace le tableau sur la droie
       for(i = num_place;i < tab_order.length; i++){
         temp_name2 = tab_order[i];
         tab_order[i] = temp_name;
@@ -44,6 +38,7 @@
     }
   }
    
+  /* on déplace id_name à la fin du tableau */
   function move_end(id_name){
     var index = tab_order.indexOf(id_name);
     tab_order.splice(index,1);
@@ -51,6 +46,7 @@
        
   }
 
+  /* on déplace id_name à la place num_place */
   function move_at(id_name,num_place){
     var index = tab_order.indexOf(id_name);
     tab_order.splice(index,1);
@@ -62,36 +58,41 @@
     }
   }
 
+  
 	function drag(target, evt) {
 		evt.dataTransfer.setData("Text", target.id);
 	
 	}
+
 	function drop(target, evt) {
 		var id = evt.dataTransfer.getData("Text");
+
+    /* nom/id de l'image déplacé */
 		var id_name = document.getElementById(id).id;
+
     var parent = target.parentNode;
     var target_id = target.id;
     var element_drag = document.getElementById(id);
     var parent_image = element_drag.parentNode;
+
+    /* place dans le tableau à laquelle on veut déplacer l'image */
     var target_place;
 
+    /* on détermine d'abord si il y a déjà une image à cette place ci et on récupère son numéro de place dans le tableau*/
     if(target.children.length > 0){
       target_place = tab_order.indexOf(target.getElementsByClassName("image_sequence")[0].id);
     }
-    
-    var before_name = "";
 
-    //on teste si l'image provient déjà de la liste
+    /* on teste si l'image provient déjà de la liste */
     if(parent_image.className == "box2"){
       parent_image.parentNode.removeChild(parent_image);
-      //on teste si on va réellement déplacer l'image
+
+      /* on teste si on va réellement déplacer l'image*/
       var image_place = tab_order.indexOf(element_drag.id);
 
+      /* on vérifie que l'on ne déplace pas l'image sur elle-même .. */
       if(image_place != target_place){
-        //test si on déplacer l'image d'une case vers la droite
-        //if(target_place == (image_place + 1)){
-          //target_place++;          
-        //} 
+        /* si c'est la case de la fin on déplace à la fin */
         if( (target_id == "box_drop") || (target_place >= tab_order.length ) ){
           move_end(id_name);
         }else{
@@ -109,7 +110,7 @@
       }
       
     }
-      
+      var before_name;
       //on récupère la place final de l'élément dans le tableau
       if(tab_order.indexOf(id_name) >= (tab_order.length -1)){
         before_name = "box_drop";
@@ -130,6 +131,8 @@
       parent.insertBefore(box, document.getElementById(before_name));
       
 		  evt.preventDefault();
+
+      /* on lance la vérification de l'ordre */
       check_order();
   }
 
@@ -189,72 +192,8 @@
           image_parent.insertBefore(smiley,document.getElementById(id_name))
         }
         
-      }
-
-      
+      } 
     }
-
-    function add_good(id_name){
-      var image_parent = document.getElementById(id_name).parentNode;
-      var smiley_good = document.getElementById("smiley_good").cloneNode(true);
-      smiley_good.id += "a";
-      smiley_good.style.display = "block";
-      image_parent.insertBefore(smiley_good,document.getElementById(id_name))
-    }
-
-    function add_bad(id_name){
-      var image_parent = document.getElementById(id_name).parentNode;
-      var smiley_bad = document.getElementById("smiley_bad").cloneNode(true);
-      smiley_bad.id += "a";
-      smiley_bad.style.display = "block";
-      image_parent.insertBefore(smiley_bad,document.getElementById(id_name))
-    }
-
-    // plus à jour pas forcément juste, ne pas utiliser avant revu
-    function rebuild_box(){
-      box_old = document.getElementById("box_in"); 
-      //for(var i = 0; i < target.children.length; i++){
-      //  target.removeChild(target.children[i]); 
-      //} 
-
-        var box_in = document.createElement("div");
-        box_in.className = "box_in";
-        box_in.id = "box_in";
-
-      for(i = 0; i < tab_order.length; i++){
-        var box = document.createElement("div");
-        box.className = "box2";
-        box.id = i;
-        box.setAttribute("ondragover", "return false");
-        box.setAttribute("ondrop","drop(this, event)");
-        box.appendChild(document.getElementById(tab_order[i]));
-        //var marginLeft_box = (i * 100);
-        //box.style.marginLeft = marginLeft_box;
-        box_in.appendChild(box);
-      }
-
-      var box = document.createElement("div");
-        box.className = "box2";
-        box.id = "drop_box";
-        box.setAttribute("ondragover", "return false");
-        box.setAttribute("ondrop","drop(this, event");
-        box_in.appendChild(box);
-
-      
-      var a = box_old.parentNode.replaceChild(box_in,box_old);
-    }
-
-
-	   /*var c = {};
-       c['authenticity_token'] = encodeURIComponent(window._token);
-       $.ajax({
-         type: "POST",
-          url: "create_phrase",
-          data: "phrase=" + phrase,
-          success: function(msg){
-            $(this).append("<br>Dropped!");
-          }
-       });*/
 
 	
 </script>
