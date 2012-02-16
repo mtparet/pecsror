@@ -4,7 +4,7 @@ Image.delete_all
 
 ['initial','maison','fleur','lit','garcon','smiley_good','smiley_bad'].each do |valeur|
   i = Image.new(:name => valeur)
-  i.image_file = File.open("app/assets/images/#{valeur}.jpg")
+  i.image_file = File.open("app/assets/images/base/#{valeur}.jpg")
   i.save
 end
 

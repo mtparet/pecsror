@@ -22,3 +22,7 @@ coverage/*
 db/*.sqlite3
 *.tmproj
 *.sw?
+public/app/*
+public/upload/*
+*.mp3
+
