@@ -11,7 +11,6 @@ class ImageController < ApplicationController
   def create
    @image = Image.new(params[:image])
    if @image.save
-     flash[:notice] = 'Image cree avec succes'
      redirect_to :action => 'index'
    else
      render :action => 'new'
