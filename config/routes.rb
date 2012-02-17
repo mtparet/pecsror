@@ -63,6 +63,8 @@ Pecs::Application.routes.draw do
   match "/images_sequentielles/display_sequence_edit" => "image_sequentielle#display_sequence_edit"
   post "/images_sequentielles/save" => "image_sequentielle#save"
 
+  post "/images_sequentielles/create" => "image_sequentielle#create"
+
   #resources :image
 
 	match "/create_audio" => "affichage#create_audio"

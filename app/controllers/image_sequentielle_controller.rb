@@ -69,5 +69,18 @@ class ImageSequentielleController < ApplicationController
   end
 
   def create
+    sequence = Sequence.new
+    sequence.name = params[:sequence][:name]
+    
+    for file in params[:file] do
+      image = Image.new
+      image.image_file = file
+      sequence_liste = SequenceListe.new
+      sequence.sequence_liste << sequence_liste
+    end
+    
+    sequence.save
+
+    redirect_to :action => 'edit'
   end
 end

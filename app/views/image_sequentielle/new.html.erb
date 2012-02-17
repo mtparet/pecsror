@@ -1,0 +1,25 @@
+<script type="text/javascript">
+      function add_file(){
+        var file = document.getElementById("file").cloneNode(true);
+        var button_add = document.getElementById("button_add");
+        button_add.parentNode.insertBefore(file, button_add);
+      }
+</script>
+
+<h1>File Upload</h1>
+<%= form_tag("/images_sequentielles/create", :multipart => true) do %>
+<p><label for="upload_file">Select File</label> : 
+<div id="file">
+<%= file_field 'file', '1' %></p>
+Nom de l'image (facultatif)
+<%= text_field 'name','1'%>
+</div>
+<button id="button_add" type="button" onclick="add_file()">
+    ajouter une image en plus
+</button> 
+<div >
+</div>
+Obligatoire
+<%= text_field 'sequence','name'%>
+<%= submit_tag "Upload" %>
+<% end %>
