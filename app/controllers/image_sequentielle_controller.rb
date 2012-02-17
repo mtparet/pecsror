@@ -13,11 +13,15 @@ class ImageSequentielleController < ApplicationController
   def display_sequence
     @sequence = Sequence.where(:name => params[:sequence_name]).first
     
-    @tab_correct = @sequence.sequence_liste.order("order_sequence").map { |i| i.image.name}
+    @tab_correct = @sequence.sequence_liste.order("order_sequence").select{ |i| !i.order_sequence.nil?}.map{|i| i.image.name}
     
     respond_to do |format|
 			format.js
 		end
+  end
+
+  def display_sequence_all
+
   end
 
   def create_audio
