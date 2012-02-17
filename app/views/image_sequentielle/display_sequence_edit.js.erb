@@ -1,0 +1,6 @@
+$("#sequence_edit").html("<%= escape_javascript(render(:partial => "sequence_edit")) %>");
+$("#box_place").html("<%= escape_javascript(render(:partial => "box_place")) %>");
+tab_order = <%= array_or_string_for_javascript(@tab_correct_id)%>
+sequence_id = <%= @sequence.id %>
+      
+  

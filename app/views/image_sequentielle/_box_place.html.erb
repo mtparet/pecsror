@@ -1,0 +1,10 @@
+ <% for sequence_liste in @sequence_listes.collect do %> 
+    <% unless sequence_liste.image.nil? %>
+   <div id="box_<%=sequence_liste.id%>" class="box2" ondragover="return false" ondrop="drop(this, event)">
+		<%= image_tag(sequence_liste.image.image_file.medium.url, :ondragstart => "drag(this, event)", :draggable => "true", :id => sequence_liste.id, :class => "image_sequence" ) %>
+</div>
+  <% end %>
+	<% end %>
+<div id="box_drop" class="box2" ondragover="return false" ondrop="drop(this, event)">
+</div>
+

@@ -9,11 +9,9 @@
 <script type="text/javascript">
 
 
-  /* tableau de l'ordre des images tel que l'utilisateur va les place*/
-  var tab_order = new Array();
-
-  /* tableau de l'ordre correct */
-  var tab_correct = new Array();
+  /* tableau de l'ordre des images tel que l'on reçoit et que l'on va réordonner */
+  var tab_order = <%= array_or_string_for_javascript(@tab_correct_id)%>
+  var sequence_id = <%= @sequence.id %>
 
   /* insérer dans le tableau à la fin */
   function insert_end(id_name){
@@ -131,70 +129,21 @@
       parent.insertBefore(box, document.getElementById(before_name));
       
 		  evt.preventDefault();
-
-      /* on lance la vérification de l'ordre */
-      check_order();
+      $("#etat_save").html("Ordre non enregistré !");
   }
 
-    function checkorder(id_name){
-      var tab_order_length = tab_order.length;
-
-      //si il n'y a qu'une image on ne peut pas tester
-      if(tab_order_length > 1){
-
-        var index_order = tab_order.indexOf(id_name);
-        var index_correct = tab_correct.indexOf(id_name);
-        
-        //si un autre image ne peut être que a droite
-        if(index_order == 0){
-          //on test si l'image à droite est la même dans les deux tableaux
-          if(((index_correct + 1) < tab_correct.length ) && (tab_order[index_order + 1] == tab_correct[index_correct + 1])){
-            smiley = document.getElementById("smiley_good").cloneNode(true);
-          }else{
-            smiley = document.getElementById("smiley_bad").cloneNode(true);
-          } 
-        //sinon on test l'image à gauche
-        //TODO : préviligier la plus longue chaine juste
-        }else{
-          if(((index_correct - 1) >= 0 ) && (tab_order[index_order - 1] == tab_correct[index_correct - 1])){
-            smiley = document.getElementById("smiley_good").cloneNode(true);
-          }else{
-          //sinon on test il y a une image à droite
-            if(((index_correct + 1) < tab_order.length ) && ((index_correct + 1) < tab_correct.length ) && (tab_order[index_order + 1] == tab_correct[index_correct + 1])){
-                 smiley = document.getElementById("smiley_good").cloneNode(true);
-            }else{
-               smiley = document.getElementById("smiley_bad").cloneNode(true);
-            }
-           
-          } 
-        }
-
-        smiley.id += id_name;
-        smiley.style.display = "";
-        return smiley;
-      }
-    }
-
-    function check_order(){
-    var id_name ;
-    var image_parent;
-    var smiley_current;
-    var smiley;
-      if(tab_order.length > 1 ){
-        for(i = 0; i < tab_order.length; i++){
-          id_name = tab_order[i];
-          image_parent = document.getElementById(id_name).parentNode;
-          smiley_current = image_parent.getElementsByClassName("smiley")[0];
-          if(smiley_current != null){
-            image_parent.removeChild(smiley_current);
+  function enregistrer(){
+    	   var c = {};
+       c['authenticity_token'] = encodeURIComponent(window._token);
+       $.ajax({
+         type: "POST",
+          url: "save",
+          data: "sequence_id=" + sequence_id +"&order_sequence=" + tab_order,
+          success: function(msg){
+            $("#etat_save").html("Ordre enregistré !");
           }
-          smiley = checkorder(id_name)
-          image_parent.insertBefore(smiley,document.getElementById(id_name))
-        }
-        
-      } 
-    }
-
+       });
+  }
 	
 </script>
 
@@ -203,25 +152,25 @@
 	 <% for sequence in @list_sequence.collect do %> 
     <%= sequence.name %>
     <% unless sequence.sequence_liste.first.image.image_file.nil? %>
-    <%= link_to(image_tag(sequence.sequence_liste.first.image.image_file.thumb.url), {:controller => "image_sequentielle", :action => 'display_sequence', :sequence_name => sequence.name}, :remote => true) %>
+    <%= link_to(image_tag(sequence.sequence_liste.first.image.image_file.thumb.url), {:controller => "image_sequentielle", :action => 'display_sequence_edit', :sequence_name => sequence.name}, :remote => true) %>
   <% end %>
 	<% end %>
 
-  <div id="sequence">
-    <%= render :partial => "sequence" %>
+  <div id="sequence_edit">
+    <%= render :partial => "sequence_edit" %>
   </div>
 
-  <%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
-
-	<div id="audio">
-		<%= render :partial => "audio" %>
-	</div>
-
-  <div id="box_in" class="box_in">
-    <%= render :partial => "box_in" %>
+  <div id="box_place" class="box_in">
+    <%= render :partial => "box_place" %>
   </div>
 
-  <%= render :partial => "smiley" %>
+  <button type="button" onclick="enregistrer()">
+    Enregistrer
+  </button> 
+
+  <div id="etat_save" >
+      Pas de changement encore effectué
+  </div>
 
   </body>
 </html>
