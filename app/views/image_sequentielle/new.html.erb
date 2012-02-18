@@ -1,12 +1,18 @@
-<h1>File Upload</h1>
+<h1>Nouvelle séquence</h1>
 <%= form_tag("/images_sequentielles/create", :multipart => true) do %>
 <p><label for="upload_file">Select File</label> : 
 <div id="file">
+Images à utiliser : 
 <%= file_field 'sequence', 'file', :multiple => true %></p>
 </div>
 <div >
 </div>
-Obligatoire
+Obligatoire :
 <%= text_field 'sequence','name'%>
 <%= submit_tag "Upload" %>
 <% end %>
+<div >
+</div>
+<div >
+</div>
+<%= link_to 'Retour aux menus', {:controller => 'home', :action => 'index'} %>

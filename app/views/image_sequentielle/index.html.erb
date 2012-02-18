@@ -211,13 +211,15 @@
     <%= render :partial => "sequence" %>
   </div>
 
-  <%= link_to 'create audio', {:controller => 'image_sequentielle', :action => 'create_audio'}, :remote => true %>
-
   <div id="box_in" class="box_in">
     <%= render :partial => "box_in" %>
   </div>
 
   <%= render :partial => "smiley" %>
-
+  <div></div>
+  <div>
+  <%= link_to 'Retour aux menus', {:controller => 'home', :action => 'index'} %>
+  </div>
+  
   </body>
 </html>
