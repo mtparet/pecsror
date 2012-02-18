@@ -69,13 +69,16 @@ class ImageSequentielleController < ApplicationController
   end
 
   def create
+    Rails.logger = Logger.new(STDOUT)
     sequence = Sequence.new
     sequence.name = params[:sequence][:name]
     
-    for file in params[:file] do
+    files_fields = params['sequence']['file']
+    for file in files_fields do
       image = Image.new
       image.image_file = file
       sequence_liste = SequenceListe.new
+      sequence_liste.image = image
       sequence.sequence_liste << sequence_liste
     end
     
