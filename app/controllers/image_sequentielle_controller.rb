@@ -13,7 +13,7 @@ class ImageSequentielleController < ApplicationController
   def display_sequence
     sequence = Sequence.where(:name => params[:sequence_name]).first
     @sequence_listes = sequence.sequence_liste.select{ |i| !i.order_sequence.nil?}
-    @tab_correct = sequence.sequence_liste.order("order_sequence").select{ |i| !i.order_sequence.nil?}.map{|i| i.image.name}
+    @tab_correct = sequence.sequence_liste.order("order_sequence").select{ |i| !i.order_sequence.nil?}.map{|i| i.id}
     
     respond_to do |format|
 			format.js
