@@ -21,11 +21,16 @@ class ImageSequentielleController < ApplicationController
   end
 
   def edit
+    @name = "initial"
+    if !params[:name].nil?
+      @name = params[:name]
+    end
+
 		@list_sequence = Sequence.all
-    @sequence = Sequence.where(:name => "initial").first
-    @sequence_listes = Sequence.where(:name => "initial").first.sequence_liste
-    @sequence_listes_no_place = Sequence.where(:name => "initial").first.sequence_liste.select{ |i| i.order_sequence.nil?}
-     @tab_correct_id = Sequence.where(:name => "initial").first.sequence_liste.order("order_sequence").select{ |i| !i.order_sequence.nil?}.map{|i| i.id}
+    @sequence = Sequence.where(:name => @name).first
+    @sequence_listes = Sequence.where(:name => @name).first.sequence_liste
+    @sequence_listes_no_place = Sequence.where(:name => @name).first.sequence_liste.select{ |i| i.order_sequence.nil?}
+     @tab_correct_id = Sequence.where(:name => @name).first.sequence_liste.order("order_sequence").select{ |i| !i.order_sequence.nil?}.map{|i| i.id}
 	end
 
   def display_sequence_edit
@@ -84,6 +89,6 @@ class ImageSequentielleController < ApplicationController
     
     sequence.save
 
-    redirect_to :action => 'edit'
+    redirect_to :action => 'edit', :name => sequence.name
   end
 end
