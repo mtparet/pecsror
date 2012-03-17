@@ -10,45 +10,149 @@
 
 
   /* tableau de l'ordre des images tel que l'utilisateur va les place*/
-  var tab_order = new Array();
+  var tab_order = <%= array_or_string_for_javascript(@tab_order) %>;
 
   /* tableau de l'ordre correct */
-  var tab_correct = new Array();
+  var tab_correct = <%= array_or_string_for_javascript(@tab_correct) %>;
 
-  /* insérer dans le tableau à la fin */
-  function insert_end(id_name){
-    tab_order.push(id_name);
-  }
+  /* tableau de l'ordre des boxs des images */
+  var tab_box = <%= array_or_string_for_javascript(@tab_box) %>;
   
-  /* insérer dans tableau de l'élément id_name à la place num_place
-     id_name est insérer à la place num_place et le reste du tableau est déplacé sur la droite */ 
-  function insert_at(id_name,num_place){
+  /* Insérer dans tableau de taille fixe de l'élément id_name à la place num_place
+    Si la place en dehors du tableau on ne fait rien
+    Si la place était avant vide on a simplement une insertion à cette place
+    Si la place était occupée, le reste du tableau est déplacé:
+        soit sur la droite ou la gauche en fonction du plus grand nombre de place vide restant à la fin du tableau
+        Si il ne reste plus de place à la toute fin du tableau de chaque côté, il est déplacé :
+          soit à droite ou gauche en fonction des places vides non finales */ 
+  function insert_at(id_name,num_place,tab){
     var temp_name = id_name;
     var temp_name2;
-    if(num_place < tab_order.length){
 
-     // on déplace le tableau sur la droie
-      for(i = num_place;i < tab_order.length; i++){
-        temp_name2 = tab_order[i];
-        tab_order[i] = temp_name;
-        temp_name = temp_name2
+    if(num_place < tab.length){
+      if(tab[num_place] == "null"){
+        tab[num_place] = id_name;
+      }else{
+      var free_right = what_free("right", true, num_place, tab);
+      var free_left = what_free("left", true, num_place, tab);
+      
+      // on test si le nombre d'élément dans free_left est > à celui dans free_right et qu'il n'est donc pas égal à 0
+      if(free_left.length > free_right.length){
+       tab.splice(free_left[0],1);
+       insert_classic(num_place,id_name,tab);
+      }else{
+        // si on vérifie que les deux ne sont pas égal à 0
+        if(free_right.length != 0 && free_left.length != 0){
+          tab.splice(free_right[0],1);
+          insert_classic(num_place,id_name,tab);
+        }else
+        // sinon on recommence en prenant en compte toutes les cases
+        {
+           var free_right = what_free("right", false, num_place, tab);
+           var free_left = what_free("left", false, num_place, tab);
+// on test si le nombre d'élément dans free_left est > à celui dans free_right et qu'il n'est donc pas égal à 0
+          if(free_left.length > free_right.length){
+           tab.splice(free_left[0],1);
+           insert_classic(num_place,id_name,tab);
+          }else{
+            // si on vérifie que les deux ne sont pas égal à 0
+            if(free_right.length != 0 && free_left.length != 0){
+              tab.splice(free_right[0],1);
+              insert_classic(num_place,id_name,tab);
+            }
+            }
+        }
       }
       
-      tab_order.push(temp_name);
+      }
     }
   }
-   
-  /* on déplace id_name à la fin du tableau */
-  function move_end(id_name){
-    var index = tab_order.indexOf(id_name);
-    tab_order.splice(index,1);
-    tab_order.push(id_name);
-       
+  
+  /* insertion classique dans un tableau avec décalage à droite */
+  function insert_classic(num_place, id_name,tab){
+    if(num_place == 0){
+      tab.unshift(id_name);
+    }else{
+      if(num_place == (tab.length - 1)){
+        tab.pus(id_name);     
+      }else{
+        var tab_right = tab.slice(num_place - 1);
+        tab_right.unshift(id_name);
+        
+        for(i = (num_place -1); i >= 0; i--){
+          tab_right.unshift(tab[i]);
+        }
+        
+        tab = tab_right;
+      }
+    }
+    return tab;
+  }
+
+  /* calcul le nombre de place vide à partir d'une certaine place dans un tableau :
+    à gauche, droite, qu'à la fin, de partout
+  side : left ou right
+  only_end : true or false
+  num_place : le numéro de la place
+  tab : le tableau
+  renvoit un tableau avec les numéros des places libres suivant les conditions
+  l'odre des places dans le tableau est indicatif pour le premier élément à supprimer si réorganisation du tableau
+  */
+  function what_free(side, only_end, num_place, tab){
+    var tab_free = new Array();
+    if(num_place < tab.length){
+      if(side == "left"){
+        if(only_end){
+          var i = 0;
+          var case_prev;
+          do{
+              case_prev = tab[i];
+              if(case_prev == "null"){
+                tab_free.push(i);
+              }
+              i++;
+            }
+          while( case_prev == "null" && i <= num_place)
+        }else{
+          for(i = num_place; i >= 0; i--){
+            if(tab[i] == "null"){
+              tab_free.push(i);
+            }
+          }
+        }
+      }else{ 
+        if (side == "right"){
+          if(only_end){
+          var i = tab.length - 1;
+          var case_prev;
+          do{
+              case_prev = tab[i];
+              if(case_prev == "null"){
+                tab_free.push(i);
+              }
+              i--;
+            }
+          while( case_prev == "null" && i >= num_place)
+        }else{
+          for(i = num_place; i < tab.length; i++){
+            if(tab[i] == "null"){
+              tab_free.push(i);
+            }
+          }
+         }
+        }
+      }
+     return tab_free;
+    } 
   }
 
   /* on déplace id_name à la place num_place */
   function move_at(id_name,num_place){
-    var index = tab_order.indexOf(id_name);
+    var index_id = tab_order.indexOf(id_name);
+    var val_num_place = tab_order[num_place];
+    
+    tab_order[num_place]
+
     tab_order.splice(index,1);
 
     if(num_place >= tab_order.length){
@@ -75,63 +179,28 @@
     var element_drag = document.getElementById(id);
     var parent_image = element_drag.parentNode;
 
-    /* place dans le tableau à laquelle on veut déplacer l'image */
-    var target_place;
-
-    /* on détermine d'abord si il y a déjà une image à cette place ci et on récupère son numéro de place dans le tableau*/
-    if(target.children.length > 0){
-      target_place = tab_order.indexOf(target.getElementsByClassName("image_sequence")[0].id);
-    }
+    /* on détermine le numéro de la case dans tab_box */
+    var target_place = tab_box.indexOf(target.id)
 
     /* on teste si l'image provient déjà de la liste */
     if(parent_image.className == "box2"){
-      parent_image.parentNode.removeChild(parent_image);
 
       /* on teste si on va réellement déplacer l'image*/
       var image_place = tab_order.indexOf(element_drag.id);
 
       /* on vérifie que l'on ne déplace pas l'image sur elle-même .. */
       if(image_place != target_place){
-        /* si c'est la case de la fin on déplace à la fin */
-        if( (target_id == "box_drop") || (target_place >= tab_order.length ) ){
-          move_end(id_name);
-        }else{
           move_at(id_name,target_place);
         }
  
-      }
-    }else{  
-      // on teste si l'on déplace à la fin (box_drop) ou sur une case déjà occupée
-      if( target_id == "box_drop"){
-        insert_end(id_name);
-
-      }else{
-        insert_at(id_name,target_place);
-      }
-      
+      }else{  
+        insert_at(id_name,target_place,tab_order);  
     }
-      var before_name;
-      //on récupère la place final de l'élément dans le tableau
-      if(tab_order.indexOf(id_name) >= (tab_order.length -1)){
-        before_name = "box_drop";
-      }else{
-        //sinon on récupère l'élément qui suit dans le tableau et le nom de la box qui le contient.
-        before_name = document.getElementById(tab_order[(tab_order.indexOf(id_name) + 1)]).parentNode.id;
-      }
-      
-      var box = document.createElement("div");
-      box.className = "box2";
-      box.id = id_name + "_box";
-      box.setAttribute("ondragover", "return false");
-      box.setAttribute("ondrop","drop(this, event)");
 
-      box.appendChild(element_drag);
-      
-
-      parent.insertBefore(box, document.getElementById(before_name));
-      
+      /* reconstruire de l'affichage des images */
+      rebuild_box();
 		  evt.preventDefault();
-
+    
       /* on lance la vérification de l'ordre */
       check_order();
   }
@@ -193,6 +262,29 @@
         }
         
       } 
+    }
+
+  function rebuild_box(){
+      box_old = document.getElementById("box_in"); 
+      //for(var i = 0; i < target.children.length; i++){
+      //  target.removeChild(target.children[i]); 
+      //} 
+
+        var box_in = document.createElement("div");
+        box_in.className = "box_in";
+        box_in.id = "box_in";
+
+      for(i = 0; i < tab_order.length; i++){
+        var box = document.createElement("div");
+        box.className = "box2";
+        box.id = tab_order[i] + "_box";
+        box.setAttribute("ondragover", "return false");
+        box.setAttribute("ondrop","drop(this, event)");
+        box.appendChild(document.getElementById(tab_order[i]));
+        box_in.appendChild(box);
+      }
+      
+      box_old.parentNode.replaceChild(box_in,box_old);
     }
 
 	

@@ -1,4 +1,5 @@
 $("#sequence").html("<%= escape_javascript(render(:partial => "sequence")) %>");
 $("#box_in").html("<%= escape_javascript(render(:partial => "box_in")) %>");
-tab_order = new Array();
+tab_order = <%= array_or_string_for_javascript(@tab_order) %>;
 tab_correct = <%= array_or_string_for_javascript(@tab_correct) %>;
+tab_box = <%= array_or_string_for_javascript(@tab_box) %>;

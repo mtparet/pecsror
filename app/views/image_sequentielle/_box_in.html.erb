@@ -1,2 +1,4 @@
-<div id="box_drop" class="box2" ondragover="return false" ondrop="drop(this, event)">
+      <% for id_box in @tab_box.collect do %> 
+<div id= <%= id_box %> class="box2" ondragover="return false" ondrop="drop(this, event)">
 </div>
+	<% end %>
