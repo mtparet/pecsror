@@ -39,12 +39,12 @@
       // on test si le nombre d'élément dans free_left est > à celui dans free_right et qu'il n'est donc pas égal à 0
       if(free_left.length > free_right.length){
        tab.splice(free_left[0],1);
-       insert_classic(num_place,id_name,tab);
+       return insert_classic(num_place,id_name,tab);
       }else{
-        // si on vérifie que les deux ne sont pas égal à 0
-        if(free_right.length != 0 && free_left.length != 0){
+        // si on vérifie que l'un des deux ne sont pas égal à 0 (et donc que free_right n'est pas égal à 0)
+        if(free_right.length != 0 || free_left.length != 0){
           tab.splice(free_right[0],1);
-          insert_classic(num_place,id_name,tab);
+          return insert_classic(num_place,id_name,tab);
         }else
         // sinon on recommence en prenant en compte toutes les cases
         {
@@ -53,19 +53,25 @@
 // on test si le nombre d'élément dans free_left est > à celui dans free_right et qu'il n'est donc pas égal à 0
           if(free_left.length > free_right.length){
            tab.splice(free_left[0],1);
-           insert_classic(num_place,id_name,tab);
+           return insert_classic(num_place,id_name,tab);
           }else{
-            // si on vérifie que les deux ne sont pas égal à 0
-            if(free_right.length != 0 && free_left.length != 0){
+            // si on vérifie que l'un des deux ne sont pas égal à 0 (et donc que free_right n'est pas égal à 0)
+            if(free_right.length != 0 || free_left.length != 0){
               tab.splice(free_right[0],1);
-              insert_classic(num_place,id_name,tab);
+              return insert_classic(num_place,id_name,tab);
             }
+			return tab;
             }
+			return tab;
         }
+		return tab;
       }
+		return tab;
       
       }
+		return tab;
     }
+	return tab;
   }
   
   /* insertion classique dans un tableau avec décalage à droite */
@@ -73,13 +79,13 @@
     if(num_place == 0){
       tab.unshift(id_name);
     }else{
-      if(num_place == (tab.length - 1)){
-        tab.pus(id_name);     
+      if(num_place == tab.length ){
+        tab.push(id_name);     
       }else{
-        var tab_right = tab.slice(num_place - 1);
+        var tab_right = tab.slice(num_place);
         tab_right.unshift(id_name);
         
-        for(i = (num_place -1); i >= 0; i--){
+        for(i = (num_place - 1); i >= 0; i--){
           tab_right.unshift(tab[i]);
         }
         
@@ -146,20 +152,13 @@
     } 
   }
 
-  /* on déplace id_name à la place num_place */
+  /* on déplace id_name à la place num_place 
+	pour se faire on stocke l'élément à déplacer, on libère la place où il était
+	et on appelle la fonction d'insertion */
   function move_at(id_name,num_place){
     var index_id = tab_order.indexOf(id_name);
-    var val_num_place = tab_order[num_place];
-    
-    tab_order[num_place]
-
-    tab_order.splice(index,1);
-
-    if(num_place >= tab_order.length){
-      tab_order.push(id_name);
-    }else{
-      insert_at(id_name,num_place);
-    }
+	tab_order[index_id] = "null";
+	return insert_at(id_name,num_place,tab_order);
   }
 
   
@@ -190,16 +189,16 @@
 
       /* on vérifie que l'on ne déplace pas l'image sur elle-même .. */
       if(image_place != target_place){
-          move_at(id_name,target_place);
+          tab_order = move_at(id_name,target_place);
         }
  
       }else{  
-        insert_at(id_name,target_place,tab_order);  
+       	 tab_order = insert_at(id_name,target_place,tab_order);  
     }
 
       /* reconstruire de l'affichage des images */
       rebuild_box();
-		  evt.preventDefault();
+	  evt.preventDefault();
     
       /* on lance la vérification de l'ordre */
       check_order();
@@ -280,7 +279,6 @@
       //for(var i = 0; i < target.children.length; i++){
       //  target.removeChild(target.children[i]); 
       //} 
-
         var box_in = document.createElement("div");
         box_in.className = "box_in";
         box_in.id = "box_in";
@@ -288,12 +286,14 @@
       for(i = 0; i < tab_order.length; i++){
           var box = document.createElement("div");
           box.className = "box2";
-          box.id = tab_order[i] + "_box";
+		  box.id = tab_box[i];
           box.setAttribute("ondragover", "return false");
           box.setAttribute("ondrop","drop(this, event)");
+
           if(tab_order[i] != "null"){
             box.appendChild(document.getElementById(tab_order[i]));
           }
+
           box_in.appendChild(box);
       }
       
