@@ -13,27 +13,10 @@
 
 ActiveRecord::Schema.define(:version => 20120215142914) do
 
-  create_table "categories", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "image", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.integer  "categorie_id"
-    t.integer  "sequence_id"
-    t.integer  "sequence_liste_id"
-    t.string   "image_file"
-  end
-
   create_table "images", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.integer  "categorie_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "sequence_id"
     t.integer  "sequence_liste_id"
     t.string   "image_file"
@@ -58,8 +41,8 @@ ActiveRecord::Schema.define(:version => 20120215142914) do
   create_table "translations", :force => true do |t|
     t.string   "name"
     t.string   "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
