@@ -204,6 +204,17 @@
       /* on lance la vérification de l'ordre */
       check_order();
   }
+    /*function find_place(target){
+      if( target.className == "box_insert"){
+        /* tester si case ensuite 
+        if(){
+        }
+        
+      }else{
+        /* on détermine le numéro de la case dans tab_box 
+        var target_place = tab_box.indexOf(target.id)
+      }
+    }*/
 
     function checkorder(id_name){
       var tab_order_length = tab_order.length;
@@ -275,13 +286,15 @@
         box_in.id = "box_in";
 
       for(i = 0; i < tab_order.length; i++){
-        var box = document.createElement("div");
-        box.className = "box2";
-        box.id = tab_order[i] + "_box";
-        box.setAttribute("ondragover", "return false");
-        box.setAttribute("ondrop","drop(this, event)");
-        box.appendChild(document.getElementById(tab_order[i]));
-        box_in.appendChild(box);
+          var box = document.createElement("div");
+          box.className = "box2";
+          box.id = tab_order[i] + "_box";
+          box.setAttribute("ondragover", "return false");
+          box.setAttribute("ondrop","drop(this, event)");
+          if(tab_order[i] != "null"){
+            box.appendChild(document.getElementById(tab_order[i]));
+          }
+          box_in.appendChild(box);
       }
       
       box_old.parentNode.replaceChild(box_in,box_old);
