@@ -19,6 +19,12 @@ class ImageSequentielleController < ApplicationController
     @tab_correct = Sequence.where(:name => @name).first.sequence_liste.order("order_sequence").select{ |i| !i.order_sequence.nil?}.map{|i| i.id}
     @tab_box = @tab_correct.map{|i| i.to_s.concat "_box"}
     @tab_order = @tab_box.map{|i| "null"}
+
+  respond_to do |format|
+    format.html
+    format.json { render :json => @list_sequence.to_json(:include => { :sequence_liste => {:include => :image}}) }
+  end
+
 	end
 
   def display_sequence
